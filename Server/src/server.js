@@ -1,5 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import { tenantResolver } from './middlewares/tenantResolver';
+
+app.use(tenantResolver);
 
 const app = express();
 app.use(express.json());
