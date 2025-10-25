@@ -1,11 +1,11 @@
 import express from "express";
 import { verifyToken } from "../middlewares/verifyToken.js";
-import { resolveTenant } from "../middlewares/tenantResolver.js";
+import { tenantResolver } from "../middlewares/tenantResolver.js";
 
 const router = express.Router();
 
 // Example protected route
-router.get("/data", verifyToken, resolveTenant, async (req, res) => {
+router.get("/data", verifyToken, tenantResolver, async (req, res) => {
   try {
     const tenantIdFromToken = req.user.tenantId;
     const tenantIdFromRequest = req.tenantId;
