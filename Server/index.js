@@ -1,11 +1,18 @@
 
 import express from "express";
+import cors from "cors";
 import userRoutes from "./src/routes/userRoutes.js";
 import resourceRoutes from "./src/routes/resourceroutes.js";
 import { connectDB } from "./src/config/db.js";
+import { requestLogger } from "./src/middlewares/requestLogger.js";
 
 const app = express();
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true,
+}));
 app.use(express.json());
+app.use(requestLogger);
 
 // Connect to MongoDB
 connectDB();
@@ -16,8 +23,10 @@ app.get("/", (req, res) => {
 
 // Connect user and resource routes
 app.use("/api/user", userRoutes);
-app.use("/api", resourceRoutes);
+app.use("/api/tenants/:tenantId/posts", resourceRoutes);
+app.use("/api/posts", resourceRoutes);
 
-app.listen(3000, () => {
-  console.log("Server started on http://localhost:3000");
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server started on http://localhost:${PORT}`);
 });

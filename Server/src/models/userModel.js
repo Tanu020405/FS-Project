@@ -3,12 +3,14 @@ import mongoose from 'mongoose';
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    email: { type: String, required: true, unique: false },
+    email: { type: String, required: true },
     password: { type: String, required: true },
-    tenantId: { type: String, required: true },
+    tenantId: { type: String, required: true, index: true },
   },
   { timestamps: true }
 );
+
+userSchema.index({ tenantId: 1, email: 1 }, { unique: true });
 
 const User = mongoose.model('User', userSchema);
 
